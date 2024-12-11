@@ -1,6 +1,8 @@
 import React from 'react'
+import twit
 
-const Navbar = () => {
+
+const TwitterEmbed = () => {
   return (
     <div>
       
@@ -8,4 +10,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default TwitterEmbed

@@ -1,21 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
-import axios from "axios";
+import { addData } from "../utils/fetchData";
+import { editContent } from "../utils/fetchData";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleDialog } from "../slices/dialogTriggers";
+import { clearForm } from "../slices/formData";
+import type { RootState } from "../store/store";
 
-const Dialog = ({
-  setDialog,
-}: {
-  setDialog: (args: (args: boolean) => boolean) => void;
-}) => {
-  const variant: Record<string, string> = {
-    inp: "bg-transparent border border-black-700 rounded-lg p-3",
-    label: "flex flex-col text-black-300 gap-2",
-  };
+const variant: Record<string, string> = {
+  inp: "bg-transparent border border-black-700 rounded-lg p-3",
+  label: "flex flex-col text-black-300 gap-2",
+};
+const Dialog = () => {
+  const dispatch = useDispatch();
+
+  const form = useSelector((state:RootState)=> state.form);
+  const id = useSelector((state:RootState)=>state.id.id);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     link: "",
   });
+  const [edit] = useState(form.title !== "");
+
+  useEffect(()=>{
+    setFormData({
+      ...form
+    })
+  },[form])
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -24,30 +38,31 @@ const Dialog = ({
     });
   };
 
-  const addData = async () => {
-    try {
-      await axios.post("http://localhost:8000/api/v1/content", {
-        title: formData.title,
-        description: formData.description,
-        link: formData.link,
-      },{
-        headers:{
-          "Authorization":localStorage.getItem('token')
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const queryClient = useQueryClient(); //access the query cache
+  const mutation = useMutation({
+    mutationFn: addData,
+    onSuccess: () => {
+      //invalidate the users query after a successfull mutation
+      queryClient.invalidateQueries();
+    },
+  });
+  const editMutation = useMutation({
+    mutationFn: editContent,
+    onSuccess: () => {
+      //invalidate the users query after a successfull mutation
+      queryClient.invalidateQueries();
+    },
+  });
+
+  const clickHandler = () => {
+    dispatch(toggleDialog());
+    dispatch(clearForm());
   };
 
-  const submitHandler = (e: React.FormEvent<HTMLSpanElement>) => {
-    e.preventDefault();
-    addData();
-  };
   return (
     //disable dialog on click outside....
     <div className="h-full w-full backdrop-blur-sm absolute flex items-center justify-center">
-      <div className="w-[25%] h-fit border border-black-700 bg-black-900 p-5 rounded-lg">
+      <div className="w-[550px] h-fit border border-black-700 bg-black-900 p-5 rounded-lg">
         <div className="text-black-300 text-xl mb-3">New content</div>
         <form className="text-sm flex flex-col gap-3">
           <label htmlFor="title" className={variant.label}>
@@ -84,10 +99,24 @@ const Dialog = ({
             />
           </label>
           <span className="w-full flex justify-between mt-2">
-            <Button text="Cancel" type="secondary" setDialog={setDialog} />
-            <span onClick={submitHandler}>
-              <Button text="Submit" setDialog={setDialog} />
+            <span onClick={clickHandler}>
+              <Button text="Cancel" type="secondary" />
             </span>
+            {edit ? 
+            <span onClick={()=>{
+              editMutation.mutate({id,formData});
+              clickHandler();
+            }}>
+              <Button text="Save"/>
+            </span>:
+            <span
+              onClick={() => {
+                mutation.mutate(formData);
+                clickHandler();
+              }}
+            >
+              <Button text="Submit" />
+            </span>}
           </span>
         </form>
       </div>

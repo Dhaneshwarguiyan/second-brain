@@ -34,6 +34,23 @@ router.get('/',authMiddleware,async (req,res)=>{
     }
 })
 
+router.post('/update/:id',authMiddleware,async (req,res)=>{
+        const {id} = req.params;
+        const userId = req.userId;
+        const {title,link,description} = req.body;
+        try {
+            const content = await Content.findOneAndReplace({_id:id},{
+                title,
+                link,
+                description,
+                userId,
+            },{new:true})
+            res.status(200).send({message:"Successfully Updated",content:content,success:true});
+        } catch (error) {
+            res.status(400).send({message:"Internal Error",success:false});
+        }
+})
+
 //delete a content
 router.delete('/delete/:id', authMiddleware,async (req,res)=>{
     const contentId = req.params.id;

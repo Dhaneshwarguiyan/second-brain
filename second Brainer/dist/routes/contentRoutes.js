@@ -45,6 +45,23 @@ router.get('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0
         res.status(400).send({ message: "Internal error", success: false });
     }
 }));
+router.post('/update/:id', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const userId = req.userId;
+    const { title, link, description } = req.body;
+    try {
+        const content = yield ContentModel_1.default.findOneAndReplace({ _id: id }, {
+            title,
+            link,
+            description,
+            userId,
+        }, { new: true });
+        res.status(200).send({ message: "Successfully Updated", content: content, success: true });
+    }
+    catch (error) {
+        res.status(400).send({ message: "Internal Error", success: false });
+    }
+}));
 //delete a content
 router.delete('/delete/:id', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const contentId = req.params.id;
