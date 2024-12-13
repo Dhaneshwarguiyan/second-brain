@@ -19,7 +19,7 @@ const open_graph_scraper_1 = __importDefault(require("open-graph-scraper"));
 const router = express_1.default.Router();
 //add new content
 router.post('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, link, description } = req.body;
+    const { title, link, description, image, linkTitle, tags } = req.body;
     const userId = req.userId;
     try {
         const content = yield ContentModel_1.default.create({
@@ -27,6 +27,9 @@ router.post('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 
             description,
             link,
             userId,
+            image,
+            linkTitle,
+            tags
         });
         res.status(200).send({ message: "Successfully created", content: content, success: true });
     }
@@ -45,16 +48,20 @@ router.get('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0
         res.status(400).send({ message: "Internal error", success: false });
     }
 }));
+//updating content with Id
 router.post('/update/:id', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const userId = req.userId;
-    const { title, link, description } = req.body;
+    const { title, link, description, image, linkTitle, tags } = req.body;
     try {
         const content = yield ContentModel_1.default.findOneAndReplace({ _id: id }, {
             title,
             link,
             description,
             userId,
+            image,
+            linkTitle,
+            tags
         }, { new: true });
         res.status(200).send({ message: "Successfully Updated", content: content, success: true });
     }
@@ -88,8 +95,8 @@ router.post("/metadata", (req, res) => __awaiter(void 0, void 0, void 0, functio
         return;
     }
     try {
-        const { result } = yield (0, open_graph_scraper_1.default)({ url });
-        res.json(result);
+        const { result, response } = yield (0, open_graph_scraper_1.default)({ url });
+        res.send(result);
     }
     catch (error) {
         res.status(500).json({ error: "Failed to fetch metadata" });

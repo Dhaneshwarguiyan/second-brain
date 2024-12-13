@@ -8,32 +8,56 @@ interface Content {
   description: string;
   link: string;
   title: string;
+  linkTitle: string;
+  image: string;
   //types and tags not yet implemented
   type?: string;
-  tag?: string[];
+  tags: string[];
 }
 
-const HomePage = () => {
+const HomePage = ({activeTab}:{activeTab:string}) => {
   const { data, isLoading } = useQuery({
     queryKey: ["data"],
     queryFn: fetchContent,
   });
   if (isLoading) return <Loader />;
   return (
-    <div className="w-full h-full overflow-scroll p-8 mb-10">
+    <div className="w-full h-full overflow-scroll p-8 mb-10 scrollbar">
       <div className="flex gap-4 flex-wrap mb-10">
-        {data.map((item: Content, i: string) => {
-          return (
-            <ContentCard
-              share={false}
-              id={item._id}
-              link={item.link}
-              title={item.title}
-              description={item.description}
-              key={i}
-            />
-          );
-        })}
+        {data && 
+          data.map((item: Content, i: string) => {
+            if(activeTab === "All"){
+              return (
+                <ContentCard
+                linkTitle={item.linkTitle}
+                image={item.image}
+                share={false}
+                id={item._id}
+                link={item.link}
+                title={item.title}
+                description={item.description}
+                key={i}
+                tags={item.tags}
+                />
+              );
+            }else{
+              if(item.tags.includes(activeTab)){
+                return (
+                  <ContentCard
+                  linkTitle={item.linkTitle}
+                  image={item.image}
+                  share={false}
+                  id={item._id}
+                  link={item.link}
+                  title={item.title}
+                  description={item.description}
+                  key={i}
+                  tags={item.tags}
+                  />
+                );
+              }
+            }
+          })}
       </div>
     </div>
   );

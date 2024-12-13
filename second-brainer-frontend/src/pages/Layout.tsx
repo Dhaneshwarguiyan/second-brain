@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import SideBar from "../components/SideBar";
 import Tabs from "../components/Tabs";
@@ -13,14 +13,15 @@ import type { RootState } from "../store/store";
 import { toggleDialog } from "../slices/dialogTriggers";
 import { toggleShareDialog } from "../slices/dialogTriggers";
 import ShareDialog from "../components/ShareDialog";
-import { shareLink } from "../utils/fetchData";
+import toast, { Toaster } from "react-hot-toast";
 
-const Layout = () => {
+const Layout = ({setActiveTab,activeTab}:{setActiveTab:Dispatch<SetStateAction<string>>,activeTab:string}) => {
   const [active, setActive] = useState("Home");
-  const [link,setLink] = useState("");
-  const [shareId,setShareId] = useState("");
-  const dialog = useSelector((state:RootState) => state.trigger.dialog)
-  const shareDialog = useSelector((state:RootState) => state.trigger.shareDialog)
+
+  const dialog = useSelector((state: RootState) => state.trigger.dialog);
+  const shareDialog = useSelector(
+    (state: RootState) => state.trigger.shareDialog,
+  );
   const token = localStorage.getItem("token");
 
   const navigate = useNavigate();
@@ -28,15 +29,11 @@ const Layout = () => {
   const handleLogout = () => {
     dispatch(logout());
     localStorage.setItem("token", "");
-    navigate("/");
+    toast.success("Logged Out");
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
   };
-  const handleShare = ()=>{
-    shareLink(true).then(share => {
-      setShareId(share.hash)
-      dispatch(toggleShareDialog());
-      setLink(`http://localhost:5173/share/${shareId}`);
-    })
-  }
   useEffect(() => {
     if (token === "" || !token) {
       navigate("/");
@@ -45,14 +42,18 @@ const Layout = () => {
   return (
     <div className="w-[100vw]  h-[100vh] overflow-hidden flex font-inter">
       {dialog && <Dialog />}
-      {shareDialog && <ShareDialog link={link}/>}
+      {shareDialog && <ShareDialog />}
       <SideBar active={active} setActive={setActive} />
       <div className="border-y border-r w-full h-full border-y-black-700 border-r-black-700 text-black-300">
         <div className=" w-full h-[70px] flex items-center justify-between px-8">
-          <Tabs />
+          <Tabs setActiveTab={setActiveTab} activeTab={activeTab}/>
           <div className="flex gap-5">
-            <span onClick={()=>dispatch(toggleDialog())}><Button text={"Add content"} icon={<Add />}/></span>
-            <span onClick={handleShare}><Button text={"Share content"} icon={<Share />} /></span>
+            <span onClick={() => dispatch(toggleDialog())}>
+              <Button text={"Add content"} icon={<Add />} />
+            </span>
+            <span onClick={()=>{dispatch(toggleShareDialog())}}>
+              <Button text={"Share content"} icon={<Share />} />
+            </span>
             <span onClick={handleLogout}>
               <Button text="Logout" />
             </span>
@@ -60,6 +61,7 @@ const Layout = () => {
         </div>
         <Outlet />
       </div>
+      <Toaster />
     </div>
   );
 };

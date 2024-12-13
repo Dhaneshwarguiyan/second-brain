@@ -35,10 +35,11 @@ router.post('/signin', async (req,res)=>{
                     username:user.username,
                     token:token
                 })
+                return;
             }
-        }else{
-            res.status(403).send({message:"Wrong email/password"})
         }
+            res.status(403).send({message:"Wrong email/password"})
+        
     } catch (error) {
         res.status(500).send({message:"Internal server Error"});
     }

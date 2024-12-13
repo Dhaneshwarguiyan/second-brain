@@ -1,4 +1,12 @@
 import axios from "axios";
+import toast from "react-hot-toast";
+
+interface formDataType {
+  title: string;
+  description: string;
+  link: string;
+  tags: string[];
+}
 
 const token = localStorage.getItem("token");
 export const fetchContent = async () => {
@@ -10,8 +18,13 @@ export const fetchContent = async () => {
   return response.data.contents;
 };
 
-//fetching content
-export const addData = async (formData: Record<string, string>) => {
+//adding content
+export const addData = async (formData: formDataType) => {
+  toast.loading('Adding content')
+  const {ogImage,ogTitle} = await fetchMetaData(formData.link);
+  console.log(ogImage,ogTitle);
+  toast.dismiss();
+
   try {
     const response = await axios.post(
       "http://localhost:8000/api/v1/content",
@@ -19,6 +32,9 @@ export const addData = async (formData: Record<string, string>) => {
         title: formData.title,
         description: formData.description,
         link: formData.link,
+        tags:formData.tags,
+        image:ogImage[0]?.url,
+        linkTitle:ogTitle
       },
       {
         headers: {
@@ -26,23 +42,7 @@ export const addData = async (formData: Record<string, string>) => {
         },
       },
     );
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-//deleting the content
-export const deleteContent = async (id: string) => {
-  try {
-    const response = await axios.delete(
-      `http://localhost:8000/api/v1/content/delete/${id}`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      },
-    );
+    toast.success('Successfully added');
     return response.data;
   } catch (error) {
     console.log(error);
@@ -56,8 +56,11 @@ export const editContent = async ({
   formData,
 }: {
   id: string;
-  formData: Record<string, string>;
+  formData: formDataType;
 }) => {
+  toast.loading("Editing Content..")
+  const {ogImage,ogTitle} = await fetchMetaData(formData.link);
+  toast.dismiss();
   try {
     const response = await axios.post(
       `http://localhost:8000/api/v1/content/update/${id}`,
@@ -65,6 +68,9 @@ export const editContent = async ({
         title: formData.title,
         description: formData.description,
         link: formData.link,
+        tags:formData.tags,
+        image:ogImage[0].url,
+        linkTitle:ogTitle
       },
       {
         headers: {
@@ -72,11 +78,32 @@ export const editContent = async ({
         },
       },
     );
+    toast.success("Successfully edited")
     return response.data;
   } catch (error) {
     console.log(error);
   }
 };
+
+
+//deleting the content
+export const deleteContent = async (id: string) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:8000/api/v1/content/delete/${id}`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+    toast.success('successfully deleted');
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 //for fetching the meta data of the link
 export const fetchMetaData = async (link: string) => {
@@ -123,5 +150,17 @@ export const getSharableContent = async (link:string)=>{
       content:["No content available"]
     }
     return response;
+  }
+}
+
+
+//Post Tags
+export const addTags = async(tagText:string) => {
+  try {
+    await axios.post('http://localhost:8000/api/v1/tag',{
+      text:tagText
+    })
+  } catch (error) {
+    console.log(error);
   }
 }

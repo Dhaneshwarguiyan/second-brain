@@ -3,13 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 interface formType {
     title:string,
     description:string,
-    link:string
+    link:string,
+    tags:string[]
 }
 
 const initialState:formType = {
     title: "",
     description: "",
     link: "",
+    tags:[]
 }
 
 const formSlice = createSlice({
@@ -20,11 +22,13 @@ const formSlice = createSlice({
             state.title = action.payload.title;
             state.description = action.payload.description;
             state.link = action.payload.link;
+            state.tags = action.payload.tags;
         },
         clearForm:(state)=>{
             state.title = "";
             state.description = "";
             state.link = "";
+            state.tags = [];
         }
     }
 })

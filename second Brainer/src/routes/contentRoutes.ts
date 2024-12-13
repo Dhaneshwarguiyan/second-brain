@@ -1,5 +1,6 @@
 import express from 'express'
 import Content from '../models/ContentModel';
+import Tag from '../models/TagModel';
 import authMiddleware from '../middlewares/authMiddleware';
 import ogs from 'open-graph-scraper';
 const router = express.Router();
@@ -8,7 +9,7 @@ const router = express.Router();
 
 //add new content
 router.post('/',authMiddleware,async (req,res)=>{
-    const {title,link,description} = req.body;
+    const {title,link,description,image,linkTitle,tags} = req.body;
     const userId = req.userId;
     try {
         const content = await Content.create({
@@ -16,6 +17,9 @@ router.post('/',authMiddleware,async (req,res)=>{
             description,
             link,
             userId,
+            image,
+            linkTitle,
+            tags
         })
         res.status(200).send({message:"Successfully created",content:content,success:true})
     } catch (error) {
@@ -34,16 +38,20 @@ router.get('/',authMiddleware,async (req,res)=>{
     }
 })
 
+//updating content with Id
 router.post('/update/:id',authMiddleware,async (req,res)=>{
         const {id} = req.params;
         const userId = req.userId;
-        const {title,link,description} = req.body;
+        const {title,link,description,image,linkTitle,tags} = req.body;
         try {
             const content = await Content.findOneAndReplace({_id:id},{
                 title,
                 link,
                 description,
                 userId,
+                image,
+                linkTitle,
+                tags
             },{new:true})
             res.status(200).send({message:"Successfully Updated",content:content,success:true});
         } catch (error) {
@@ -79,8 +87,8 @@ router.post("/metadata", async (req, res) => {
         return;
     }
         try {
-            const { result } = await ogs({ url });
-            res.json(result);
+            const { result,response } = await ogs({ url });
+            res.send(result);
           } catch (error) {
             res.status(500).json({ error: "Failed to fetch metadata" });
           }

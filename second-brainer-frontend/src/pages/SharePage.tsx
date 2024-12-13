@@ -9,9 +9,11 @@ interface Content {
   description: string;
   link: string;
   title: string;
+  linkTitle:string;
+  image:string;
   //types and tags not yet implemented
   type?: string;
-  tag?: string[];
+  tags: string[];
 }
 
 const SharePage = () => {
@@ -29,22 +31,25 @@ const SharePage = () => {
         setShareable(false);
       }
     });
-  }, []);
+  }, [link]);
 
   return (
-    <div className="w-full h-full overflow-y-scroll p-8 mb-10">
+    <div className="w-full h-full overflow-y-scroll p-8 mb-10 scrollbar">
       {isShareable ? (
         <div className="flex gap-4 flex-wrap mb-10">
           {data ? (
             data.map((item: Content) => {
               return (
                 <ContentCard
-                  share={true}
-                  id={item._id}
-                  link={item.link}
-                  title={item.title}
-                  description={item.description}
-                  key={item._id}
+                linkTitle={item.linkTitle}
+                image={item.image}
+                share={true}
+                id={item._id}
+                link={item.link}
+                title={item.title}
+                description={item.description}
+                key={item._id}
+                tags={item.tags}
                 />
               );
             })

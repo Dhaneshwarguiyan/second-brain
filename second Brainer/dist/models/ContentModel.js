@@ -17,10 +17,16 @@ const contentSchema = new mongoose_1.default.Schema({
         type: String,
         required: true
     },
+    linkTitle: {
+        type: String
+    },
+    image: {
+        type: String,
+    },
     description: String,
     tags: [{
-            type: mongoose_1.default.Schema.Types.ObjectId,
-            ref: 'Tag'
+            type: String,
+            unique: true
         }],
     userId: {
         type: mongoose_1.default.Schema.Types.ObjectId,

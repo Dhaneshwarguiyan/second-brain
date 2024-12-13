@@ -1,60 +1,75 @@
-import { fetchMetaData } from "../utils/fetchData";
 import { deleteContent } from "../utils/fetchData";
 import Options from "../icons/Options";
 import Url from "../icons/Url";
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { TwitterTweetEmbed } from "react-twitter-embed";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { setForm } from "../slices/formData";
 import { toggleDialog } from "../slices/dialogTriggers";
 import { useDispatch } from "react-redux";
 import { setId } from "../slices/contentId";
-import Loader from "./Loader";
+import Tags from "./Tags";
 
 const ContentCard = ({
+  linkTitle,
+  image,
   share,
   id,
   link,
   title,
   description,
+  tags
 }: {
+  linkTitle:string,
+  image:string,
   share:boolean,
   id:string,
   link: string;
   title: string;
   description: string;
+  tags:string[];
 }) => {
-  const [edit,setEdit] = useState(false);
+  const editOptionRef = useRef<HTMLDivElement>(null);
+  const [edit,setEdit] = useState<boolean>(false);
   const dispatch = useDispatch();
   const arr = link.split("/");
   const tweetid = arr[arr.length - 1];
 
+  //UseEffects
+  useEffect(()=>{
+    window.addEventListener('mousedown',closeEditOptionHandler);
+    return ()=>{
+      window.removeEventListener('mousedown',closeEditOptionHandler);
+    }
+  },[edit])
+
+  //Handlers
   const clickHandler = ()=>{
+    //toggling the edit options
     setEdit(!edit);
-    //turning on the dialog done
+    //turning on the dialog box
     dispatch(toggleDialog());
-    dispatch(setForm({title,description,link}))
+    dispatch(setForm({title,description,link,tags}))
+    //I forgot why I did this
+    //I did this So that I can globally access the Id of the content
+    //and find and replace the content in backend
     dispatch(setId({id}));
   }
 
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["metaData", link],
-    queryFn: ()=>fetchMetaData(link),
-  });
+  const closeEditOptionHandler = (e:MouseEvent)=>{
+    if(e.target instanceof Node && !editOptionRef.current?.contains(e.target)){
+      setEdit(false);
+    }
+  }
 
   const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn:deleteContent,
     onSuccess:()=>{
       queryClient.invalidateQueries();
     }
   });
-  if (isLoading) {
-    return (
-      <Loader />
-    );
-  }
   return (
     <div className="font-inter p-4 border border-black-700 w-[383px] rounded-lg text-black-300">
       <div className="flex justify-between items-start">
@@ -62,7 +77,7 @@ const ContentCard = ({
           <div className="text-lg text-black-300">{title}</div>
           <div className="text-sm font-light text-black-500">{description}</div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 relative" ref={editOptionRef}>
             {!share && <span className="cursor-pointer">
              <span onClick={()=>setEdit(!edit)}><Options /></span>
             {edit && (
@@ -81,11 +96,11 @@ const ContentCard = ({
           </span>
         </div>
       </div>
-      {!link.includes("x.com") ? (
+      {link && !link.includes("x.com") ? (
         <img
-          src={data.ogImage[0]?.url}
+          src={image}
           alt="Img"
-          className="rounded-sm my-4 h-[250px] object-cover"
+          className="rounded-sm my-4 h-[210px] w-[350px] object-cover"
         />
       ) : (
         <TwitterTweetEmbed tweetId={tweetid} />
@@ -93,11 +108,18 @@ const ContentCard = ({
       <div>
         {!link.includes("x.com") && (
           <div className="text-lg text-wrap">
-            {data?.ogTitle?.length > 70
-              ? `${data?.ogTitle.substr(0, 70)}....`
-              : data.ogTitle}
+            {linkTitle && linkTitle.length > 70
+              ? `${linkTitle.substr(0, 70)}....`
+              : linkTitle}
           </div>
         )}
+      </div>
+      <div className="flex gap-2 mt-4">
+        {
+          tags.map(tag=>{
+            return <Tags text={tag} key={tag}/>
+          })
+        }
       </div>
     </div>
   );

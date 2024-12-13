@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 //Tags Schema
 const tagSchema = new mongoose_1.default.Schema({
-    title: String,
+    text: { type: String, unique: true },
 }, {
     timestamps: true
 });

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 //Tags Schema
 
  const tagSchema = new mongoose.Schema({
-    title:String,
+    text:{type:String,unique:true},
  },{
     timestamps:true
  })

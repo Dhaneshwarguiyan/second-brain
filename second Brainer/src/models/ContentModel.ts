@@ -14,10 +14,16 @@ const contentSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    linkTitle:{
+    	type:String
+    },
+    image:{
+        type:String,
+    },
     description:String,
     tags:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Tag'
+        type:String,
+        unique:true
     }],
     userId:{
         type:mongoose.Schema.Types.ObjectId,

@@ -45,11 +45,10 @@ router.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function*
                     username: user.username,
                     token: token
                 });
+                return;
             }
         }
-        else {
-            res.status(403).send({ message: "Wrong email/password" });
-        }
+        res.status(403).send({ message: "Wrong email/password" });
     }
     catch (error) {
         res.status(500).send({ message: "Internal server Error" });

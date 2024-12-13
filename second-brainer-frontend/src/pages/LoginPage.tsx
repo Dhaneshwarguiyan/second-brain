@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import { login } from "../slices/userSlice";
 import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const variant: Record<string, string> = {
@@ -34,11 +36,20 @@ const LoginPage = () => {
           password: inputForm.password,
         },
       );
-      navigate("/home");
+      toast.success("logged in")
+      setTimeout(()=>{
+        navigate("/home");
+      },1000)
       dispatch(login({username:response.data.username,token:response.data.token}))
       localStorage.setItem("token", response.data.token);
-    } catch (error) {
-      console.log(error);
+    } catch(e) {
+      //@ts-expect-error
+      if(e.status === 403){
+        toast.error('Incorrect email/password')
+      }
+      else{
+        toast.error("Something went wrong")
+      }
     }
   };
   const handleSubmit = (e: React.FormEvent<HTMLSpanElement>) => {
@@ -46,7 +57,7 @@ const LoginPage = () => {
     signinCall();
   };
   return (
-    <div className="font-inter w-[20%] h-fit p-5 border border-black-700 rounded-lg">
+    <div className="font-inter w-[20%] h-fit p-5 border border-black-700 rounded-lg backdrop-blur-2xl">
       <div>
         <h3 className="text-black-300 text-xl">Welcome to Brainly.in</h3>
         <p className="text-black-500 text-sm font-light">

@@ -9,8 +9,10 @@ import HomePage from "./pages/HomePage";
 import Layout from "./pages/Layout";
 import SettingPage from "./pages/SettingPage";
 import SearchPage from "./pages/SearchPage";
+import { useState } from "react";
 
 function App() {
+  const [activeTab,setActiveTab] = useState("All");
   return (
     <div className="bg-black-900 h-[100vh]">
       <BrowserRouter>
@@ -21,8 +23,8 @@ function App() {
             <Route path="signup" element={<SignupPage />} />
           </Route>
           <Route path="/share/:link" element={<SharePage />} />
-          <Route path="/home" element={<Layout />}>
-            <Route index element={<HomePage />} />
+          <Route path="/home" element={<Layout activeTab={activeTab} setActiveTab={setActiveTab}/>}>
+            <Route index element={<HomePage activeTab={activeTab}/>} />
             <Route path="search" element={<SearchPage />} />
             <Route path="setting" element={<SettingPage />} />
           </Route>
