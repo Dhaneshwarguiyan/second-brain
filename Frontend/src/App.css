@@ -3,7 +3,7 @@ div {
 }
 
 .brain {
-  background-size: 200%;
+  /* background-size: 200%; */
   background: linear-gradient(
     to right,
     #fc72ff,

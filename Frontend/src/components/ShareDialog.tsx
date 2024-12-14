@@ -55,11 +55,11 @@ const ShareDialog = () => {
     //disable dialog on click outside....
     <div className="h-full w-full backdrop-blur-sm absolute flex items-center justify-center z-10">
       <div
-        className="w-[550px] h-fit border border-black-700 bg-black-900 p-5 rounded-lg text-black-300 flex flex-col gap-4"
+        className="sm:w-[550px] w-[80%] h-fit border border-black-700 bg-black-900 p-5 rounded-lg text-black-300 flex flex-col gap-4"
         ref={shareDialogRef}
       >
         <span className="flex justify-between">
-          <span>{link}</span>
+          <div className="w-[80%] break-all ">{link}</div>
           <label
             htmlFor="check"
             className={` cursor-pointer ${share ? "bg-black-300" : "bg-gray-600"} relative w-12 h-7 rounded-full`}

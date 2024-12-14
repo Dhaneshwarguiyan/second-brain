@@ -11,7 +11,7 @@ const LandingPage = () => {
     }
   },[])
   return (
-    <div className="h-full overflow-hidden">
+    <div className="h-full overflow-hidden font-inter">
       <img src={bg} alt="" className="absolute"/>
       <GridSmallBackgroundDemo />
     </div>

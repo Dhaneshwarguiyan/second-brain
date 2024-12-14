@@ -57,7 +57,7 @@ const LoginPage = () => {
     signinCall();
   };
   return (
-    <div className="font-inter w-[20%] h-fit p-5 border border-black-700 rounded-lg backdrop-blur-2xl">
+    <div className="font-inter xl:w-[25%] h-fit p-5 border border-black-700 rounded-lg backdrop-blur-2xl">
       <div>
         <h3 className="text-black-300 text-xl">Welcome to Brainly.in</h3>
         <p className="text-black-500 text-sm font-light">
