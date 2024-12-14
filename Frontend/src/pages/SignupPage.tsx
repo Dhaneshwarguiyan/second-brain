@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const SignupPage = () => {
   const variant: Record<string, string> = {
@@ -27,7 +28,7 @@ const SignupPage = () => {
 
   const signupCall = async () => {
     try {
-      const response = await axios.post(
+       await axios.post(
         "http://localhost:8000/api/v1/users/signup",
         {
           fullname: inputForm.fullname,
@@ -36,9 +37,10 @@ const SignupPage = () => {
           password: inputForm.password,
         },
       );
+      toast.success("User Created")
       navigate("/login");
-      console.log(response);
     } catch (error) {
+      toast.error('something went wrong')
       console.log(error);
     }
   };

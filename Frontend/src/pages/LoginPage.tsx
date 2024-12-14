@@ -36,7 +36,7 @@ const LoginPage = () => {
           password: inputForm.password,
         },
       );
-      toast.success("logged in")
+      toast.success(`${response.data.username} logged in`)
       setTimeout(()=>{
         navigate("/home");
       },1000)

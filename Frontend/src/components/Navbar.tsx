@@ -21,7 +21,7 @@ const Navbar = () => {
         </span>
         <span
           onClick={() => {
-            navigate("login/signup");
+            navigate("/login/signup");
           }}
         >
           <Button text="signup" type="secondary" size="lg"/>
