@@ -6,9 +6,10 @@ import { TwitterTweetEmbed } from "react-twitter-embed";
 import { useEffect, useRef, useState } from "react";
 import { setForm } from "../slices/formData";
 import { toggleDialog } from "../slices/dialogTriggers";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setId } from "../slices/contentId";
 import Tags from "./Tags";
+import { RootState } from "../store/store";
 
 const ContentCard = ({
   linkTitle,
@@ -32,6 +33,7 @@ const ContentCard = ({
   const editOptionRef = useRef<HTMLDivElement>(null);
   const [edit,setEdit] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const token = useSelector((state: RootState) => state.user.token);
   const arr = link.split("/");
   const tweetid = arr[arr.length - 1];
 
@@ -83,7 +85,7 @@ const ContentCard = ({
                 <span className="border-b border-black-700 cursor-pointer" onClick={clickHandler}>
                   Edit
                 </span>
-                <span className="cursor-pointer" onClick={()=>{setEdit(!edit);mutation.mutate(id)}}>delete</span>
+                <span className="cursor-pointer" onClick={()=>{setEdit(!edit); if(token) mutation.mutate({id,token})}}>delete</span>
               </div>
             )}
           </span>}

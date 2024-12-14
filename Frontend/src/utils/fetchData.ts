@@ -8,13 +8,14 @@ interface formDataType {
   tags: string[];
 }
 
-const token = localStorage.getItem("token");
-export const fetchContent = async () => {
+// const token = localStorage.getItem("token");
+
+export const fetchContent = async (token: string) => {
   const response = await axios.get(
     `${import.meta.env.VITE_API}/api/v1/content`,
     {
       headers: {
-        Authorization: token as string,
+        Authorization: `Bearer ${token}`,
       },
     },
   );
@@ -22,7 +23,7 @@ export const fetchContent = async () => {
 };
 
 //adding content
-export const addData = async (formData: formDataType) => {
+export const addData = async ({formData,token}: {formData:formDataType,token:string}) => {
   toast.loading("Adding content");
   const { ogImage, ogTitle } = await fetchMetaData(formData.link);
   console.log(ogImage, ogTitle);
@@ -41,7 +42,7 @@ export const addData = async (formData: formDataType) => {
       },
       {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -57,9 +58,11 @@ export const addData = async (formData: formDataType) => {
 export const editContent = async ({
   id,
   formData,
+  token
 }: {
   id: string;
   formData: formDataType;
+  token:string;
 }) => {
   toast.loading("Editing Content..");
   const { ogImage, ogTitle } = await fetchMetaData(formData.link);
@@ -77,7 +80,7 @@ export const editContent = async ({
       },
       {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -89,7 +92,13 @@ export const editContent = async ({
 };
 
 //deleting the content
-export const deleteContent = async (id: string) => {
+export const deleteContent = async ({
+  id,
+  token,
+}: {
+  id: string;
+  token: string;
+}) => {
   try {
     const response = await axios.delete(
       `${import.meta.env.VITE_API}/api/v1/content/delete/${id}`,
@@ -123,7 +132,7 @@ export const fetchMetaData = async (link: string) => {
 
 //fetch shareable link
 
-export const shareLink = async (share: boolean) => {
+export const shareLink = async (share: boolean,token:string) => {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_API}/api/v1/link/share`,
@@ -132,7 +141,7 @@ export const shareLink = async (share: boolean) => {
       },
       {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
       },
     );

@@ -1,19 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface userType {
-    username:string,
-    token:string
-}
-
 interface initType {
     isAuthenticated:boolean,
-    userDetails:userType | null
+    token:string | null
 }
 
 
 const initialState:initType = {
     isAuthenticated:false,
-    userDetails:null
+    token:null
 }
 
 const userSlice = createSlice({
@@ -22,11 +17,11 @@ const userSlice = createSlice({
     reducers:{
         login:(state,action)=>{
             state.isAuthenticated=true;
-            state.userDetails = action.payload;
+            state.token = action.payload;
         },
         logout:(state) => {
             state.isAuthenticated=false;
-            state.userDetails = null;
+            state.token = null;
         }
     }
 })

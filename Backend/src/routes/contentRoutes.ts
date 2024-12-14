@@ -34,6 +34,7 @@ router.get('/',authMiddleware,async (req:Request,res:Response)=>{
         const contents = await Content.find({userId});
         res.status(200).send({contents:contents,success:true});
     } catch (error) {
+        console.log(error);
         res.status(400).send({message:"Internal error",success:false})
     }
 })

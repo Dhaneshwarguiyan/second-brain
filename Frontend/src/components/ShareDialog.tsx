@@ -1,11 +1,13 @@
 import Button from "./Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleShareDialog } from "../slices/dialogTriggers";
 import { shareLink } from "../utils/fetchData";
 import copy from "copy-to-clipboard";
 import { useEffect, useRef, useState } from "react";
+import { RootState } from "../store/store";
 
 const ShareDialog = () => {
+  const token = useSelector((state: RootState) => state.user.token);
   const shareDialogRef = useRef<HTMLDivElement>(null);
   const [link, setLink] = useState<string>("");
   const [share, setShare] = useState<boolean>(
@@ -19,15 +21,18 @@ const ShareDialog = () => {
 
   //useEffects
   useEffect(() => {
-    const demo = async () => {
-      const { hash } = await shareLink(share);
-      if (share) {
-        setLink(`http:localhost:5173/share/${hash}`);
-      } else {
-        setLink("No link to share");
+    const createShareLink = async () => {
+      //handle properly if token is not present
+      if(token){
+        const { hash } = await shareLink(share,token);
+        if (share) {
+          setLink(`http:localhost:5173/share/${hash}`);
+        } else {
+          setLink("No link to share");
+        }
       }
     };
-    demo();
+    createShareLink();
     if (share) {
       localStorage.setItem("share", "true");
     } else {

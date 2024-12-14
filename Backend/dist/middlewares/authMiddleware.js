@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const authMiddleware = (req, res, next) => {
-    const token = req.headers["authorization"];
+    var _a;
+    const token = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
     const decode = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
     if (decode) {
         if (typeof decode === "string") {

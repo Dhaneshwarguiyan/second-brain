@@ -40,7 +40,7 @@ const LoginPage = () => {
       setTimeout(()=>{
         navigate("/home");
       },1000)
-      dispatch(login({username:response.data.username,token:response.data.token}))
+      dispatch(login(response.data.token))
       localStorage.setItem("token", response.data.token);
     } catch(e) {
       //@ts-expect-error

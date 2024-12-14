@@ -42,6 +42,7 @@ const Dialog = () => {
   //useState
   const form = useSelector((state: RootState) => state.form);
   const id = useSelector((state: RootState) => state.id.id);
+  const token = useSelector((state: RootState) => state.user.token);
   const [options, setOptions] = useState<boolean>(false);
   const [tagText, setTagText] = useState<string>("");
   const [allTags, setAllTags] = useState<string[]>([]);
@@ -261,7 +262,8 @@ const Dialog = () => {
             {edit ? (
               <span
                 onClick={() => {
-                  editMutation.mutate({ id, formData });
+                  //mutate requires only first arguments so if you want to send multiple argument send as an object
+                  if(token) editMutation.mutate({ id, formData,token });
                   closeDialog();
                 }}
               >
@@ -270,7 +272,7 @@ const Dialog = () => {
             ) : (
               <span
                 onClick={() => {
-                  mutation.mutate(formData);
+                   if(token) mutation.mutate({formData,token});
                   closeDialog();
                 }}
               >
