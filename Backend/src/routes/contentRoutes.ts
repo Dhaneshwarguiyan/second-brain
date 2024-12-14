@@ -1,6 +1,5 @@
 import express from 'express'
 import Content from '../models/ContentModel';
-import Tag from '../models/TagModel';
 import authMiddleware from '../middlewares/authMiddleware';
 import ogs from 'open-graph-scraper';
 const router = express.Router();
