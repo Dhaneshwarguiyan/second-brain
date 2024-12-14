@@ -29,7 +29,7 @@ const SignupPage = () => {
   const signupCall = async () => {
     try {
        await axios.post(
-        "http://localhost:8000/api/v1/users/signup",
+        `${import.meta.env.VITE_API}/api/v1/users/signup`,
         {
           fullname: inputForm.fullname,
           username: inputForm.username,

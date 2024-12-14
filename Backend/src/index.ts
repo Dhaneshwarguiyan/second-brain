@@ -18,7 +18,8 @@ import tagRoutes from './routes/TagRoutes';
 app.use(express.json());
 app.use(cors({
     origin:['http://localhost:5173','http://192.168.1.10:5173'],
-    credentials:true
+    credentials:true,
+    allowedHeaders:'http://localhost:5173'
 }));
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/content',contentRoutes);

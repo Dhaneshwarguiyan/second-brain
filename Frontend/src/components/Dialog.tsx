@@ -85,7 +85,7 @@ const Dialog = () => {
 
   const getTags = () => {
     try {
-      axios.get("http://localhost:8000/api/v1/tag/all").then((data) => {
+      axios.get(`${import.meta.env.VITE_API}/api/v1/tag/all`).then((data) => {
         const tags = data.data.response.map((res: responseType) => {
           return res.text;
         });
