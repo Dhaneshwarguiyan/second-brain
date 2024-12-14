@@ -6,7 +6,7 @@ const Options = () => {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="size-5"
+      className="sm:size-5 size-3"
     >
       <path
         strokeLinecap="round"

@@ -22,7 +22,7 @@ const HomePage = ({activeTab}:{activeTab:string}) => {
   });
   if (isLoading) return <Loader />;
   return (
-    <div className="w-full h-full overflow-scroll p-8 mb-10 scrollbar">
+    <div className="w-full h-full overflow-scroll lg:p-8 p-2 mb-10 scrollbar">
       <div className="flex gap-4 flex-wrap mb-10">
         {data && 
           data.map((item: Content, i: string) => {

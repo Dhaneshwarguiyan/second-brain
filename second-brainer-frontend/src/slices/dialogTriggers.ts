@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     dialog:false,
     shareDialog:false,
-    isLoading:false
+    isLoading:false,
+    menuDrawer:false,
 }
 
 
@@ -19,9 +20,12 @@ const triggerSlice = createSlice({
         },
         toggleLoading:(state)=>{
             state.isLoading = !state.isLoading;
+        },
+        toggleMenu:(state)=>{
+            state.menuDrawer = !state.menuDrawer;
         }
     }
 })
 
-export const {toggleDialog,toggleLoading,toggleShareDialog} = triggerSlice.actions;
+export const {toggleDialog,toggleLoading,toggleShareDialog,toggleMenu} = triggerSlice.actions;
 export default triggerSlice.reducer;

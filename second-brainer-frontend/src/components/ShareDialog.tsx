@@ -53,7 +53,7 @@ const ShareDialog = () => {
 
   return (
     //disable dialog on click outside....
-    <div className="h-full w-full backdrop-blur-sm absolute flex items-center justify-center">
+    <div className="h-full w-full backdrop-blur-sm absolute flex items-center justify-center z-10">
       <div
         className="w-[550px] h-fit border border-black-700 bg-black-900 p-5 rounded-lg text-black-300 flex flex-col gap-4"
         ref={shareDialogRef}

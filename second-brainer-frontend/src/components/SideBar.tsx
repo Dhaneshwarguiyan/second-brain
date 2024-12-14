@@ -27,7 +27,7 @@ const SideBar = ({
   ];
 
   return (
-    <div className="w-[15vw] h-full border border-black-700 text-black-300 flex flex-col items-start py-4 px-3">
+    <div className="w-[15vw] h-full border border-black-700 text-black-300 lg:flex flex-col items-start py-4 px-3 hidden ">
       <span className="px-4 mb-2 text-black-300 text-lg">Dashboard</span>
       <div className="w-full flex flex-col gap-2">
         {items.map((item, i) => {

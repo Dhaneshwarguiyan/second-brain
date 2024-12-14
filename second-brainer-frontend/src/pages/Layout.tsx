@@ -6,6 +6,7 @@ import Dialog from "../components/Dialog";
 import Button from "../components/Button";
 import Add from "../icons/Add";
 import Share from "../icons/Share";
+import Logout from "../icons/Logout";
 import { logout } from "../slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -45,9 +46,9 @@ const Layout = ({setActiveTab,activeTab}:{setActiveTab:Dispatch<SetStateAction<s
       {shareDialog && <ShareDialog />}
       <SideBar active={active} setActive={setActive} />
       <div className="border-y border-r w-full h-full border-y-black-700 border-r-black-700 text-black-300">
-        <div className=" w-full h-[70px] flex items-center justify-between px-8">
+        <div className="w-full h-[70px] flex items-center md:justify-between justify-evenly gap-2 lg:px-8 md:px-4">
           <Tabs setActiveTab={setActiveTab} activeTab={activeTab}/>
-          <div className="flex gap-5">
+          <div className="md:flex gap-5 hidden">
             <span onClick={() => dispatch(toggleDialog())}>
               <Button text={"Add content"} icon={<Add />} />
             </span>
@@ -55,10 +56,23 @@ const Layout = ({setActiveTab,activeTab}:{setActiveTab:Dispatch<SetStateAction<s
               <Button text={"Share content"} icon={<Share />} />
             </span>
             <span onClick={handleLogout}>
-              <Button text="Logout" />
+              <Button text="Logout" icon={<Logout />}/>
             </span>
           </div>
+          <span onClick={handleLogout} className="md:hidden">
+            <Logout />
+          </span>
         </div>
+        <span onClick={()=>{dispatch(toggleShareDialog())}} className="absolute z-50 bottom-32 right-12 md:hidden">
+              <div className="w-[60px] border-4 rounded-full p-2">
+              <Share />
+              </div>
+            </span>
+         <span onClick={() => dispatch(toggleDialog())} className="absolute z-50 bottom-10 right-10 md:hidden">
+               <div className="w-[70px]">
+               <Add />
+               </div>
+          </span>
         <Outlet />
       </div>
       <Toaster />

@@ -17,13 +17,16 @@ const TagRoutes_1 = __importDefault(require("./routes/TagRoutes"));
 //middlewares
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5173', 'http://192.168.1.10:5173'],
     credentials: true
 }));
 app.use('/api/v1/users', userRoutes_1.default);
 app.use('/api/v1/content', contentRoutes_1.default);
 app.use('/api/v1/link', linkRoutes_1.default);
 app.use('/api/v1/tag', TagRoutes_1.default);
+app.get('/', (req, res) => {
+    res.json('Hello world');
+});
 const PORT = process.env.PORT || 3000;
 //connect to db
 (0, config_1.default)();

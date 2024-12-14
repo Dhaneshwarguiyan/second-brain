@@ -71,13 +71,11 @@ const ContentCard = ({
     }
   });
   return (
-    <div className="font-inter p-4 border border-black-700 w-[383px] rounded-lg text-black-300">
-      <div className="flex justify-between items-start">
-        <div>
-          <div className="text-lg text-black-300">{title}</div>
-          <div className="text-sm font-light text-black-500">{description}</div>
-        </div>
-        <div className="flex gap-3 relative" ref={editOptionRef}>
+    <div className="font-inter p-4 border border-black-700 2xl:w-[24%] xl:w-[32%] lg:w-[32%] md:w-[48%] sm:w-[48%] w-[47%] rounded-lg text-black-300">
+      <div className="flex flex-col justify-between items-start">
+        <div className="w-full flex items-start justify-between">
+          <div className="xl:text-lg sm:text-base text-sm  text-black-300">{title}</div>
+          <div className="flex gap-3 relative z-0 top-1" ref={editOptionRef}>
             {!share && <span className="cursor-pointer">
              <span onClick={()=>setEdit(!edit)}><Options /></span>
             {edit && (
@@ -95,26 +93,28 @@ const ContentCard = ({
             </a>
           </span>
         </div>
+        </div>
+        <div className="lg:text-sm text-xs font-light text-black-500">{description}</div>
       </div>
       {link && !link.includes("x.com") ? (
         <img
           src={image}
           alt="Img"
-          className="rounded-sm my-4 h-[210px] w-[350px] object-cover"
+          className="rounded-sm xl:my-4 lg:my-2 my-4 2xl:h-[270px] xl:h-[300px] lg:h-[220px] md:h-[180px] sm:h-[180px] h-[120px]  w-[100%] object-cover"
         />
       ) : (
         <TwitterTweetEmbed tweetId={tweetid} />
       )}
       <div>
         {!link.includes("x.com") && (
-          <div className="text-lg text-wrap">
+          <div className="xl:text-lg md:text-sm sm:text-sm text-xs text-wrap">
             {linkTitle && linkTitle.length > 70
               ? `${linkTitle.substr(0, 70)}....`
               : linkTitle}
           </div>
         )}
       </div>
-      <div className="flex gap-2 mt-4">
+      <div className="flex gap-2 lg:mt-4 mt-2">
         {
           tags.map(tag=>{
             return <Tags text={tag} key={tag}/>
