@@ -1,13 +1,15 @@
 import express from 'express'
 import User from '../models/UserModel';
 import jwt from 'jsonwebtoken';
+import { Response,Request } from 'express';
+
 
 const router = express.Router();
 
 
 //signup route
 //zod validation and hashing
-router.post('/signup',async (req,res)=>{
+router.post('/signup',async (req:Request,res:Response)=>{
     const {username,password,email,fullname} = req.body;
     try {
         const user = await User.create({
@@ -24,7 +26,7 @@ router.post('/signup',async (req,res)=>{
 
 
 //signin... route
-router.post('/signin', async (req,res)=>{
+router.post('/signin', async (req:Request,res:Response)=>{
     const {email,password} = req.body;
     try {
         const user = await User.findOne({email});

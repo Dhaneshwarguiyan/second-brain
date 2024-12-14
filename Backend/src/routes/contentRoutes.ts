@@ -2,12 +2,13 @@ import express from 'express'
 import Content from '../models/ContentModel';
 import authMiddleware from '../middlewares/authMiddleware';
 import ogs from 'open-graph-scraper';
+import { Response,Request } from 'express';
 const router = express.Router();
 
 
 
 //add new content
-router.post('/',authMiddleware,async (req,res)=>{
+router.post('/',authMiddleware,async (req:Request,res:Response)=>{
     const {title,link,description,image,linkTitle,tags} = req.body;
     const userId = req.userId;
     try {
@@ -27,7 +28,7 @@ router.post('/',authMiddleware,async (req,res)=>{
 })
 
 //fetchin all content
-router.get('/',authMiddleware,async (req,res)=>{
+router.get('/',authMiddleware,async (req:Request,res:Response)=>{
     const userId = req.userId;
     try {
         const contents = await Content.find({userId});
@@ -38,7 +39,7 @@ router.get('/',authMiddleware,async (req,res)=>{
 })
 
 //updating content with Id
-router.post('/update/:id',authMiddleware,async (req,res)=>{
+router.post('/update/:id',authMiddleware,async (req:Request,res:Response)=>{
         const {id} = req.params;
         const userId = req.userId;
         const {title,link,description,image,linkTitle,tags} = req.body;
@@ -59,7 +60,7 @@ router.post('/update/:id',authMiddleware,async (req,res)=>{
 })
 
 //delete a content
-router.delete('/delete/:id', authMiddleware,async (req,res)=>{
+router.delete('/delete/:id', authMiddleware,async (req:Request,res:Response)=>{
     const contentId = req.params.id;
     const userId = req.userId;
     try {
@@ -78,7 +79,7 @@ router.delete('/delete/:id', authMiddleware,async (req,res)=>{
 })
 
 
-router.post("/metadata", async (req, res) => {
+router.post("/metadata", async (req:Request,res:Response) => {
 
     const { url } = req.body;  
     if (!url) {

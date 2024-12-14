@@ -3,11 +3,13 @@ import Content from '../models/ContentModel';
 import Link from '../models/LinkModel';
 import linkGenerator from '../utils/utils';
 import authMiddleware from '../middlewares/authMiddleware';
+import { Response,Request } from 'express';
+
 
 const router = express.Router();
 
 //creating a shareable link
-router.post('/share',authMiddleware,async (req,res)=>{
+router.post('/share',authMiddleware,async (req:Request,res:Response)=>{
     const userId = req.userId;
     const share = req.body.share;
     try {
@@ -42,7 +44,7 @@ router.post('/share',authMiddleware,async (req,res)=>{
 
 //opening a shared link
 //this route will not be authenticated and anyone with the link can access the brain
-router.get('/:shareLink',async (req,res)=>{
+router.get('/:shareLink',async (req:Request,res:Response)=>{
     const link = req.params.shareLink;
     try {
         //using the link find the user and then access its brain

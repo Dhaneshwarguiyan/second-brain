@@ -1,9 +1,11 @@
 import Tag from "../models/TagModel";
 import express from 'express'
+import { Response,Request } from 'express';
+
 
 const router = express.Router();
 
-router.post('/', async(req,res)=>{
+router.post('/', async(req:Request,res:Response)=>{
     const {text} = req.body;
     try {
         const response = await Tag.create({
@@ -16,7 +18,7 @@ router.post('/', async(req,res)=>{
 })
 
 //to get all tags
-router.get('/all', async(req,res)=>{
+router.get('/all', async(req:Request,res:Response)=>{
     try {
         const response = await Tag.find({});
         res.status(200).send({message:"Successfully fetched",response:response})

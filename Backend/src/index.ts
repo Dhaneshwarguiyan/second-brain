@@ -2,6 +2,8 @@ import express from 'express';
 import connectDb from './db/config';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { Response,Request } from 'express';
+
 
 dotenv.config();
 const app = express();
@@ -23,7 +25,7 @@ app.use('/api/v1/content',contentRoutes);
 app.use('/api/v1/link',linkRoutes);
 app.use('/api/v1/tag',tagRoutes);
 
-app.get('/',(req,res)=>{
+app.get('/',(req:Request,res:Response)=>{
     res.json('Hello world')
 })
 
