@@ -9,18 +9,11 @@ const router = express.Router();
 
 //add new content
 router.post('/',authMiddleware,async (req:Request,res:Response)=>{
-    const {title,link,description,image,linkTitle,tags} = req.body;
+    const data = req.body;
     const userId = req.userId;
+    data.userId = userId;
     try {
-        const content = await Content.create({
-            title,
-            description,
-            link,
-            userId,
-            image,
-            linkTitle,
-            tags
-        })
+        const content = await Content.create(data);
         res.status(200).send({message:"Successfully created",content:content,success:true})
     } catch (error) {
         res.status(400).send({message:"Internal Error",success:false})
@@ -43,17 +36,10 @@ router.get('/',authMiddleware,async (req:Request,res:Response)=>{
 router.post('/update/:id',authMiddleware,async (req:Request,res:Response)=>{
         const {id} = req.params;
         const userId = req.userId;
-        const {title,link,description,image,linkTitle,tags} = req.body;
+        const data = req.body;
+        data.userId = userId;
         try {
-            const content = await Content.findOneAndReplace({_id:id},{
-                title,
-                link,
-                description,
-                userId,
-                image,
-                linkTitle,
-                tags
-            },{new:true})
+            const content = await Content.findOneAndReplace({_id:id},data,{new:true})
             res.status(200).send({message:"Successfully Updated",content:content,success:true});
         } catch (error) {
             res.status(400).send({message:"Internal Error",success:false});

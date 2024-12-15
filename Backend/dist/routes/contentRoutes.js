@@ -19,18 +19,11 @@ const open_graph_scraper_1 = __importDefault(require("open-graph-scraper"));
 const router = express_1.default.Router();
 //add new content
 router.post('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, link, description, image, linkTitle, tags } = req.body;
+    const data = req.body;
     const userId = req.userId;
+    data.userId = userId;
     try {
-        const content = yield ContentModel_1.default.create({
-            title,
-            description,
-            link,
-            userId,
-            image,
-            linkTitle,
-            tags
-        });
+        const content = yield ContentModel_1.default.create(data);
         res.status(200).send({ message: "Successfully created", content: content, success: true });
     }
     catch (error) {
@@ -53,17 +46,10 @@ router.get('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0
 router.post('/update/:id', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const userId = req.userId;
-    const { title, link, description, image, linkTitle, tags } = req.body;
+    const data = req.body;
+    data.userId = userId;
     try {
-        const content = yield ContentModel_1.default.findOneAndReplace({ _id: id }, {
-            title,
-            link,
-            description,
-            userId,
-            image,
-            linkTitle,
-            tags
-        }, { new: true });
+        const content = yield ContentModel_1.default.findOneAndReplace({ _id: id }, data, { new: true });
         res.status(200).send({ message: "Successfully Updated", content: content, success: true });
     }
     catch (error) {

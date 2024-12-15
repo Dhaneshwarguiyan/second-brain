@@ -5,6 +5,8 @@ interface formDataType {
   title: string;
   description: string;
   link: string;
+  linkTitle?: string;
+  image?: string;
   tags: string[];
 }
 
@@ -23,23 +25,33 @@ export const fetchContent = async (token: string) => {
 };
 
 //adding content
-export const addData = async ({formData,token}: {formData:formDataType,token:string}) => {
+export const addData = async ({
+  formData,
+  token,
+}: {
+  formData: formDataType;
+  token: string;
+}) => {
+  const reqData: formDataType = {
+    title: formData.title,
+    description: formData.description,
+    link: formData.link,
+    tags: formData.tags,
+  };
   toast.loading("Adding content");
-  const { ogImage, ogTitle } = await fetchMetaData(formData.link);
-  console.log(ogImage, ogTitle);
+  const data = await fetchMetaData(formData.link);
+  if (data?.ogImage) {
+    reqData.image = data.ogImage[0].url;
+  }
+  if (data.ogTitle) {
+    reqData.linkTitle = data.ogTitle;
+  }
   toast.dismiss();
 
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_API}/api/v1/content`,
-      {
-        title: formData.title,
-        description: formData.description,
-        link: formData.link,
-        tags: formData.tags,
-        image: ogImage[0]?.url,
-        linkTitle: ogTitle,
-      },
+      reqData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -58,26 +70,31 @@ export const addData = async ({formData,token}: {formData:formDataType,token:str
 export const editContent = async ({
   id,
   formData,
-  token
+  token,
 }: {
   id: string;
   formData: formDataType;
-  token:string;
+  token: string;
 }) => {
+  const reqData: formDataType = {
+    title: formData.title,
+    description: formData.description,
+    link: formData.link,
+    tags: formData.tags,
+  };
   toast.loading("Editing Content..");
-  const { ogImage, ogTitle } = await fetchMetaData(formData.link);
+  const data = await fetchMetaData(formData.link);
+  if (data?.ogImage) {
+    reqData.image = data.ogImage[0].url;
+  }
+  if (data.ogTitle) {
+    reqData.linkTitle = data.ogTitle;
+  }
   toast.dismiss();
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_API}/api/v1/content/update/${id}`,
-      {
-        title: formData.title,
-        description: formData.description,
-        link: formData.link,
-        tags: formData.tags,
-        image: ogImage[0].url,
-        linkTitle: ogTitle,
-      },
+      reqData,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -99,15 +116,17 @@ export const deleteContent = async ({
   id: string;
   token: string;
 }) => {
+  toast.loading("Please wait...");
   try {
     const response = await axios.delete(
       `${import.meta.env.VITE_API}/api/v1/content/delete/${id}`,
       {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
+    toast.dismiss();
     toast.success("successfully deleted");
     return response.data;
   } catch (error) {
@@ -132,7 +151,7 @@ export const fetchMetaData = async (link: string) => {
 
 //fetch shareable link
 
-export const shareLink = async (share: boolean,token:string) => {
+export const shareLink = async (share: boolean, token: string) => {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_API}/api/v1/link/share`,
