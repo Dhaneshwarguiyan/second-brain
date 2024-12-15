@@ -1,6 +1,6 @@
 import NavTile from "../components/NavTile";
 import Home from "../icons/Home";
-import Search from "../icons/Search";
+// import Search from "../icons/Search";
 import { ReactElement } from "react";
 
 interface itemType {
@@ -20,10 +20,10 @@ const SideBar = ({
       icon: <Home />,
       text: "Home",
     },
-    {
-      icon: <Search />,
-      text: "Search",
-    },
+    // {
+    //   icon: <Search />,
+    //   text: "Search",
+    // },
   ];
 
   return (
