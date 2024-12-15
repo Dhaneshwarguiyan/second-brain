@@ -17,7 +17,7 @@ const TagRoutes_1 = __importDefault(require("./routes/TagRoutes"));
 //middlewares
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
-    origin: ['https://brainly-frontend-8xdz.onrender.com/'],
+    origin: '*',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Custom-Header'],
