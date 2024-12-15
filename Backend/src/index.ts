@@ -17,7 +17,7 @@ import tagRoutes from './routes/TagRoutes';
 //middlewares
 app.use(express.json());
 app.use(cors({
-    origin:['http://localhost:5173','http://192.168.112.50:5173'],
+    origin:['https://brainly-frontend-8xdz.onrender.com/'],
     credentials:true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Custom-Header'],
