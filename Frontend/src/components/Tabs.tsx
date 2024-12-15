@@ -6,7 +6,7 @@ const Tabs = ({setActiveTab,activeTab}:{setActiveTab:Dispatch<SetStateAction<str
     <div className="text-sm bg-black-700  px-1 flex items-center p-1 rounded-lg text-black-300 w-fit">
       {
         tabs.map((tab,i)=>{
-            return <span key={i} className={`cursor-pointer ${activeTab === tab ? "bg-black-900 px-3 py-2 rounded-lg":"bg-black-700 px-3 py-2"}`} onClick={()=>{setActiveTab(tab)}}>{tab}</span>
+            return <span key={i} className={`cursor-pointer ${activeTab === tab ? "bg-black-900 sm:px-3 px-2 py-2 rounded-lg":"bg-black-700 sm:px-3 px-2 py-2"}`} onClick={()=>{setActiveTab(tab)}}>{tab}</span>
         })
       }
     </div>

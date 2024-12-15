@@ -19,7 +19,6 @@ interface Content {
 
 const HomePage = ({ activeTab }: { activeTab: string }) => {
   const token = useSelector((state: RootState) => state.user.token);
-
   const { data, isLoading } = useQuery({
     queryKey: ["data"],
     queryFn: () => {

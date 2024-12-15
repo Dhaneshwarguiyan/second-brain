@@ -73,7 +73,7 @@ const ContentCard = ({
     }
   });
   return (
-    <div className="font-inter p-4 border border-black-700 2xl:w-[24%] xl:w-[32%] lg:w-[32%] md:w-[48%] sm:w-[48%] w-[47%] rounded-lg text-black-300">
+    <div className="font-inter p-4 border border-black-700 2xl:w-[24%] xl:w-[32%] lg:w-[32%] md:w-[48%] sm:w-[48%] w-[100%] rounded-lg text-black-300">
       <div className="flex flex-col justify-between items-start">
         <div className="w-full flex items-start justify-between">
           <div className="xl:text-lg sm:text-base text-sm  text-black-300">{title}</div>
@@ -102,7 +102,7 @@ const ContentCard = ({
         <img
           src={image}
           alt="Img"
-          className="rounded-sm xl:my-4 lg:my-2 my-4 2xl:h-[270px] xl:h-[300px] lg:h-[220px] md:h-[180px] sm:h-[180px] h-[120px]  w-[100%] object-cover"
+          className="rounded-sm xl:my-4 lg:my-2 my-4 2xl:h-[270px] xl:h-[300px] lg:h-[220px] md:h-[180px] sm:h-[180px] h-[150px]  w-[100%] object-cover"
         />
       ) : (
         <TwitterTweetEmbed tweetId={tweetid} />

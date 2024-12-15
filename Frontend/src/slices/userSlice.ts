@@ -2,13 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface initType {
     isAuthenticated:boolean,
-    token:string | null
+    token:string | null,
 }
 
 
 const initialState:initType = {
     isAuthenticated:false,
-    token:null
+    token:localStorage.getItem('token')
 }
 
 const userSlice = createSlice({
