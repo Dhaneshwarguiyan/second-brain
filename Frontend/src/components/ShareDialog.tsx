@@ -26,7 +26,7 @@ const ShareDialog = () => {
       if(token){
         const { hash } = await shareLink(share,token);
         if (share) {
-          setLink(`http:localhost:5173/share/${hash}`);
+          setLink(`https://brainly-in.vercel.app/share/${hash}`);
         } else {
           setLink("No link to share");
         }
