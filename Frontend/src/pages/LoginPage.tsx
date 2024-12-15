@@ -29,6 +29,7 @@ const LoginPage = () => {
   };
   const signinCall = async () => {
     try {
+      toast.loading("Please wait..");
       const response = await axios.post(
         `${import.meta.env.VITE_API}/api/v1/users/signin`,
         {
@@ -36,19 +37,19 @@ const LoginPage = () => {
           password: inputForm.password,
         },
       );
-      toast.success(`${response.data.username} logged in`)
-      setTimeout(()=>{
+      toast.dismiss();
+      toast.success(`${response.data.username} logged in`);
+      setTimeout(() => {
         navigate("/home");
-      },1000)
-      dispatch(login(response.data.token))
+      }, 1000);
+      dispatch(login(response.data.token));
       localStorage.setItem("token", response.data.token);
-    } catch(e) {
+    } catch (e) {
       //@ts-expect-error
-      if(e.status === 403){
-        toast.error('Incorrect email/password')
-      }
-      else{
-        toast.error("Something went wrong")
+      if (e.status === 403) {
+        toast.error("Incorrect email/password");
+      } else {
+        toast.error("Something went wrong");
       }
     }
   };
