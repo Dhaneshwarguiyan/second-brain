@@ -28,6 +28,7 @@ const SignupPage = () => {
 
   const signupCall = async () => {
     try {
+      toast.loading("Please wait..");
        await axios.post(
         `${import.meta.env.VITE_API}/api/v1/users/signup`,
         {
@@ -37,7 +38,8 @@ const SignupPage = () => {
           password: inputForm.password,
         },
       );
-      toast.success("User Created")
+      toast.dismiss();
+      toast.success("User Created Successfully")
       navigate("/login");
     } catch (error) {
       toast.error('something went wrong')
