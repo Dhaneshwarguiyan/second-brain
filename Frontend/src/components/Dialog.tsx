@@ -48,6 +48,7 @@ const Dialog = () => {
   const [allTags, setAllTags] = useState<string[]>([]);
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [active, setActive] = useState<string>(allTags[0]);
+  const [isValidLink,setValidLink] = useState<string|null>(null);
   const [formData, setFormData] = useState<formDataType>({
     title: "",
     description: "",
@@ -108,8 +109,6 @@ const Dialog = () => {
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       if (!formData.tags.includes(tagText)) {
-        //db query will later add functionality to add more tags
-        // addTags(tagText);
         setFormData({
           ...formData,
           tags: [...formData.tags, tagText],
@@ -148,7 +147,27 @@ const Dialog = () => {
       tags: newTagArray,
     });
   };
+  
+  const saveHandler = () => {
+    //mutate requires only first arguments so if you want to send multiple argument send as an object
+    if(formData.link.startsWith('http') || formData.link.startsWith('www')){
+      setValidLink(null);
+      if(token) editMutation.mutate({ id, formData,token });
+      closeDialog();
+    }else{
+      setValidLink("Please enter a valid link")
+    }
+  }
 
+  const submitHandler = () => {
+    if(formData.link.startsWith('http') || formData.link.startsWith('www')){
+      setValidLink(null);
+      if(token) mutation.mutate({formData,token});
+      closeDialog();
+    }else{
+      setValidLink("Please enter a valid link")
+    }
+ }
   //ReactQuery Code
   const queryClient = useQueryClient(); //access the query cache
   const mutation = useMutation({
@@ -205,6 +224,7 @@ const Dialog = () => {
               placeholder="Url of the content"
               className={variant.inp}
             />
+            {isValidLink && <div className="text-red-500">{isValidLink}</div>}
           </label>
           <div className="flex flex-wrap gap-2">
             {formData && formData?.tags?.map((text) => {
@@ -261,20 +281,13 @@ const Dialog = () => {
             </span>
             {edit ? (
               <span
-                onClick={() => {
-                  //mutate requires only first arguments so if you want to send multiple argument send as an object
-                  if(token) editMutation.mutate({ id, formData,token });
-                  closeDialog();
-                }}
+                onClick={saveHandler}
               >
                 <Button text="Save" />
               </span>
             ) : (
               <span
-                onClick={() => {
-                   if(token) mutation.mutate({formData,token});
-                  closeDialog();
-                }}
+                onClick={submitHandler}
               >
                 <Button text="Submit" />
               </span>

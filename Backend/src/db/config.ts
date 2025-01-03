@@ -6,6 +6,7 @@ const connectDb = async ()=>{
         await mongoose.connect(`${process.env.MONGO_URI}`);
         console.log('Connected to Database');
     } catch (error) {
+        console.log(error)
         console.log('Internal Error Please try again later')
     }
 }

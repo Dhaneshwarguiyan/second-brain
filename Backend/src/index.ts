@@ -3,7 +3,7 @@ import connectDb from './db/config';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { Response,Request } from 'express';
-
+import Feedback from './models/FeedbackModel';
 
 dotenv.config();
 const app = express();
@@ -26,6 +26,15 @@ app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/content',contentRoutes);
 app.use('/api/v1/link',linkRoutes);
 app.use('/api/v1/tag',tagRoutes);
+app.post('/api/v1/feedback',async(req:Request,res:Response)=>{
+    try {
+        const {feedback} = req.body;
+        const response = await Feedback.create({feedback});
+        res.send({message:"Thanks for your valuable feedback"});
+    } catch (error) {
+        res.status(500).send({message:"Internal Server Error"});
+    }
+})
 
 app.get('/',(req:Request,res:Response)=>{
     res.json('Hello world')

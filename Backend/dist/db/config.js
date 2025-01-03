@@ -20,6 +20,7 @@ const connectDb = () => __awaiter(void 0, void 0, void 0, function* () {
         console.log('Connected to Database');
     }
     catch (error) {
+        console.log(error);
         console.log('Internal Error Please try again later');
     }
 });

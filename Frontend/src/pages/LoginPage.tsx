@@ -45,6 +45,7 @@ const LoginPage = () => {
       dispatch(login(response.data.token));
       localStorage.setItem("token", response.data.token);
     } catch (e) {
+      console.log(e);
       //@ts-expect-error
       if (e.status === 403) {
         toast.error("Incorrect email/password");

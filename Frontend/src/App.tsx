@@ -10,6 +10,7 @@ import Layout from "./pages/Layout";
 import SettingPage from "./pages/SettingPage";
 import SearchPage from "./pages/SearchPage";
 import { useState } from "react";
+import Layout1 from "./pages/Layout1";
 
 function App() {
   const [activeTab,setActiveTab] = useState("All");
@@ -17,6 +18,7 @@ function App() {
     <div className="bg-black-900 h-[100vh]">
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Layout1/>}>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginLayout />}>
             <Route index element={<LoginPage />} />
@@ -27,6 +29,7 @@ function App() {
             <Route index element={<HomePage activeTab={activeTab}/>} />
             <Route path="search" element={<SearchPage />} />
             <Route path="setting" element={<SettingPage />} />
+          </Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -12,7 +12,6 @@ const contentSchema = new mongoose.Schema({
     },
     title:{
         type:String,
-        required:true
     },
     linkTitle:{
     	type:String

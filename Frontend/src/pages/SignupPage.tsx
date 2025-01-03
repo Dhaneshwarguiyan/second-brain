@@ -3,12 +3,21 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {z} from "zod";
 
 const SignupPage = () => {
   const variant: Record<string, string> = {
     inp: "bg-transparent border border-black-700 rounded-lg p-3 font-light",
     label: "flex flex-col text-black-300 gap-2",
   };
+  const userSchema = z.object({
+    fullname:z.string().min(3,{message:"FullName should be 3-10 character long"}).max(10,{message:"FullName should be 3-10 character long"}),
+    username:z.string().min(3,{message:"username should be 3-10 character long"}).max(10,{message:"username should be 3-10 character long"}),
+    email:z.string().email({message:"Not a valid Email"}),
+    password:z.string().min(8,{message:"Password must be 8-12 character long"})
+  })
+  // type userType = z.infer<typeof userSchema>;
+
   const navigate = useNavigate();
   const [inputForm, setInputForm] = useState({
     fullname: "",
@@ -16,6 +25,12 @@ const SignupPage = () => {
     email: "",
     password: "",
   });
+  const [isFromValid,setIsFormValid] = useState({
+    fullname: null,
+    username: null,
+    email: null,
+    password: null,
+  })
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputForm((prevData) => {
@@ -49,7 +64,24 @@ const SignupPage = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLSpanElement>) => {
     e.preventDefault();
-    signupCall();
+    const result = userSchema.safeParse(inputForm);
+    if(result.success){
+      signupCall();
+      setIsFormValid({
+        fullname: null,
+        username: null,
+        email: null,
+        password: null,
+      });
+    }else{
+      const parsedError = JSON.parse(result.error.message);
+      const errors = parsedError.reduce((result: { [x: string]: string; },parsedError: { path: (string | number)[]; message: string; })=>{
+          result[parsedError.path[0]] = parsedError.message;
+          return result;
+      },{})
+      setIsFormValid({...errors})
+    }
+    console.log(isFromValid);
   };
   return (
     <div className="font-inter xl:w-[25%] h-fit p-5 border border-black-700 rounded-lg backdrop-blur-2xl">
@@ -68,6 +100,7 @@ const SignupPage = () => {
           placeholder="Jhon Doe"
           className={variant.inp}
         />
+        {isFromValid.fullname && <div className="text-red-500">{isFromValid.fullname}</div>}
         </label>
         <label htmlFor="username" className={variant.label}>
           Username
@@ -79,6 +112,7 @@ const SignupPage = () => {
           placeholder="@jhondoe4651"
           className={variant.inp}
         />
+        {isFromValid.username && <div className="text-red-500">{isFromValid.username}</div>}
         </label>
         <label htmlFor="email" className={variant.label}>
           Email
@@ -90,6 +124,7 @@ const SignupPage = () => {
           placeholder="jhondoe4651@gmail.com"
           className={variant.inp}
         />
+        {isFromValid.email && <div className="text-red-500">{isFromValid.email}</div>}
         </label>
         <label htmlFor="password" className={variant.label}>
           Password
@@ -101,6 +136,7 @@ const SignupPage = () => {
           placeholder="Password"
           className={variant.inp}
         />
+        {isFromValid.password && <div className="text-red-500">{isFromValid.password}</div>}
         </label>
         <div className="flex justify-between">
         <div className="flex flex-col font-light text-black-500 text-sm">
