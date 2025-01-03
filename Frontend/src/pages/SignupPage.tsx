@@ -56,9 +56,8 @@ const SignupPage = () => {
       toast.dismiss();
       toast.success("User Created Successfully")
       navigate("/login");
-    } catch (error) {
+    } catch  {
       toast.error('something went wrong')
-      console.log(error);
     }
   };
 
@@ -81,7 +80,6 @@ const SignupPage = () => {
       },{})
       setIsFormValid({...errors})
     }
-    console.log(isFromValid);
   };
   return (
     <div className="font-inter xl:w-[25%] h-fit p-5 border border-black-700 rounded-lg backdrop-blur-2xl">

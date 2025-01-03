@@ -49,6 +49,7 @@ const Dialog = () => {
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   const [active, setActive] = useState<string>(allTags[0]);
   const [isValidLink,setValidLink] = useState<string|null>(null);
+  const [isValidTitle,setValidTitle] = useState<string|null>(null);
   const [formData, setFormData] = useState<formDataType>({
     title: "",
     description: "",
@@ -93,8 +94,8 @@ const Dialog = () => {
         });
         setAllTags(tags);
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
+      toast.error("Sever is down")
     }
   };
 
@@ -150,22 +151,36 @@ const Dialog = () => {
   
   const saveHandler = () => {
     //mutate requires only first arguments so if you want to send multiple argument send as an object
-    if(formData.link.startsWith('http') || formData.link.startsWith('www')){
+    if((formData.link.startsWith('http') || formData.link.startsWith('www')) && formData.title !== ""){
       setValidLink(null);
+      setValidTitle(null);
       if(token) editMutation.mutate({ id, formData,token });
       closeDialog();
     }else{
       setValidLink("Please enter a valid link")
     }
+    if(formData.title !== ""){
+      setValidTitle("Please enter title")
+    }
   }
 
   const submitHandler = () => {
-    if(formData.link.startsWith('http') || formData.link.startsWith('www')){
+    if((formData.link.startsWith('http') || formData.link.startsWith('www')) && formData.title !== ""){
       setValidLink(null);
+      setValidTitle(null);
       if(token) mutation.mutate({formData,token});
       closeDialog();
-    }else{
+    }
+    if(!(formData.link.startsWith('http') || formData.link.startsWith('www')))
+    {
       setValidLink("Please enter a valid link")
+    }else{
+      setValidLink(null);
+    }
+    if(formData.title === ""){
+      setValidTitle("Please enter title")
+    }else{
+      setValidTitle(null);
     }
  }
   //ReactQuery Code
@@ -202,6 +217,7 @@ const Dialog = () => {
               placeholder="Title of the content"
               className={variant.inp}
             />
+            {isValidTitle && <div className="text-red-500">{isValidTitle}</div>}
           </label>
           <label htmlFor="description" className={variant.label}>
             Description
