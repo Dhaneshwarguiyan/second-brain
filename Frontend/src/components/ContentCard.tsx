@@ -2,7 +2,7 @@ import { deleteContent } from "../utils/fetchData";
 import Options from "../icons/Options";
 import Url from "../icons/Url";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import {TwitterTweetEmbed} from 'react-twitter-embed'
+import {Tweet} from 'react-twitter-widgets'
 import { useEffect, useRef, useState } from "react";
 import { setForm } from "../slices/formData";
 import { toggleDialog } from "../slices/dialogTriggers";
@@ -105,7 +105,7 @@ const ContentCard = ({
           className="rounded-sm xl:my-4 lg:my-2 my-4 2xl:h-[270px] xl:h-[300px] lg:h-[220px] md:h-[180px] sm:h-[180px] h-[150px]  w-[100%] object-cover"
         />
       ) : (
-        <TwitterTweetEmbed tweetId={tweetid} />
+        <Tweet tweetId={tweetid} />
       )}
       <div>
         {!link.includes("x.com") && (
