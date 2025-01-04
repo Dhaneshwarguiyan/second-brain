@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { response } from 'express'
 import Content from '../models/ContentModel';
 import authMiddleware from '../middlewares/authMiddleware';
 import ogs from 'open-graph-scraper';
@@ -27,7 +27,6 @@ router.get('/',authMiddleware,async (req:Request,res:Response)=>{
         const contents = await Content.find({userId});
         res.status(200).send({contents:contents,success:true});
     } catch (error) {
-        console.log(error);
         res.status(400).send({message:"Internal error",success:false})
     }
 })
@@ -74,8 +73,8 @@ router.post("/metadata", async (req:Request,res:Response) => {
         return;
     }
         try {
-            const { result,response } = await ogs({ url });
-            res.send({result,response});
+            const response = await ogs({ url });
+            res.send(response);
           } catch (error) {
             res.status(500).json({ error: "Failed to fetch metadata" });
           }

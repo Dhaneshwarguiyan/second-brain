@@ -87,7 +87,7 @@ export const editContent = async ({
   if (data?.ogImage) {
     reqData.image = data.ogImage[0].url;
   }
-  if (data.ogTitle) {
+  if (data?.ogTitle) {
     reqData.linkTitle = data.ogTitle;
   }
   toast.dismiss();
@@ -143,7 +143,6 @@ export const fetchMetaData = async (link: string) => {
         url: link,
       },
     );
-    console.log(response.data.response);
     return response.data.result;
   } catch (error) {
     console.log(error);

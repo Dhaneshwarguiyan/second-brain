@@ -27,6 +27,7 @@ router.post('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 
         res.status(200).send({ message: "Successfully created", content: content, success: true });
     }
     catch (error) {
+        console.log(error);
         res.status(400).send({ message: "Internal Error", success: false });
     }
 }));
@@ -82,8 +83,8 @@ router.post("/metadata", (req, res) => __awaiter(void 0, void 0, void 0, functio
         return;
     }
     try {
-        const { result, response } = yield (0, open_graph_scraper_1.default)({ url });
-        res.send(result);
+        const response = yield (0, open_graph_scraper_1.default)({ url });
+        res.send(response);
     }
     catch (error) {
         res.status(500).json({ error: "Failed to fetch metadata" });
