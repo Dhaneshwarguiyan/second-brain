@@ -15,7 +15,6 @@ const contentSchema = new mongoose_1.default.Schema({
     },
     title: {
         type: String,
-        required: true
     },
     linkTitle: {
         type: String
