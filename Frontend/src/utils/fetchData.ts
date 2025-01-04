@@ -143,7 +143,8 @@ export const fetchMetaData = async (link: string) => {
         url: link,
       },
     );
-    return response.data;
+    console.log(response.data.response);
+    return response.data.result;
   } catch (error) {
     console.log(error);
   }

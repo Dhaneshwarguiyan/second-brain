@@ -75,7 +75,7 @@ router.post("/metadata", async (req:Request,res:Response) => {
     }
         try {
             const { result,response } = await ogs({ url });
-            res.send(response);
+            res.send({result,response});
           } catch (error) {
             res.status(500).json({ error: "Failed to fetch metadata" });
           }
