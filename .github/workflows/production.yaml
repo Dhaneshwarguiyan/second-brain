@@ -18,6 +18,7 @@ jobs:
           scripts: |
                 export NVM_DIR="$HOME/.nvm"
                 source "$NVM_DIR/nvm.sh"
+                echo "hello"
                 ls
                 cd second-brain
                 git pull origin main
