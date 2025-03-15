@@ -18,18 +18,13 @@ jobs:
           script: |
                 export NVM_DIR="$HOME/.nvm"
                 source "$NVM_DIR/nvm.sh"
-                echo "hello"
-                ls
+
                 cd second-brain
                 git pull origin main
-                echo "VITE_API=http://${{ secrets.PROD_HOST }}" >> Frontend/.env
                 echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> Backend/.env
                 echo "PORT=${{ secrets.BACKEND_PORT }}" >> Backend/.env
                 echo "JWT_SECRET=sdfkjhsdfhoiwejfsdjflk" >> Backend/.env
-                cd Frontend
-                npm install
-                npm run build
-                cd ../Backend
+                cd Backend
                 npm install
                 npm run build
                 pm2 restart all
