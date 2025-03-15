@@ -18,7 +18,7 @@ jobs:
           scripts: |
                 export NVM_DIR="$HOME/.nvm"
                 source "$NVM_DIR/nvm.sh"
-
+                ls
                 cd second-brain
                 git pull origin main
                 echo "VITE_API=http://${{ secrets.PROD_HOST }}" >> Frontend/.env
