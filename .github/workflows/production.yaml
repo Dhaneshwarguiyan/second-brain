@@ -11,9 +11,9 @@ jobs:
       - name: appleboy ssh
         uses: appleboy/ssh-action@v1.2.1
         with:
-          host: ${{ secrets.PROD_HOST }} //add ip of the prod host
+          host: ${{ secrets.PROD_HOST }}
           username: ubuntu
-          key: ${{ secrets.SSH_KEY }} //private ssh key or pem file
+          key: ${{ secrets.SSH_KEY }}
           port: 22
           scripts: |
                 export NVM_DIR="$HOME/.nvm"
