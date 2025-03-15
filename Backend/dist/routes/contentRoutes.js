@@ -27,7 +27,6 @@ router.post('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 
         res.status(200).send({ message: "Successfully created", content: content, success: true });
     }
     catch (error) {
-        console.log(error);
         res.status(400).send({ message: "Internal Error", success: false });
     }
 }));
@@ -39,7 +38,6 @@ router.get('/', authMiddleware_1.default, (req, res) => __awaiter(void 0, void 0
         res.status(200).send({ contents: contents, success: true });
     }
     catch (error) {
-        console.log(error);
         res.status(400).send({ message: "Internal error", success: false });
     }
 }));
