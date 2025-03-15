@@ -15,7 +15,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           port: 22
-          scripts: |
+          script: |
                 export NVM_DIR="$HOME/.nvm"
                 source "$NVM_DIR/nvm.sh"
                 echo "hello"
